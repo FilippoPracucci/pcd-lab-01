@@ -6,31 +6,33 @@ import static org.fusesource.jansi.Ansi.*;
 
 public class WordThread extends Thread {
 
-    private final Screen screen;
-    private final int x0;
-    private final int y0;
+    private final int startPos;
+    private final int startLine;
+    private final int endLine;
     private final String word;
     private final int millisecondsToWait;
 
-    public WordThread(final String name, final Screen screen, final String word, final int y0, final int x0) {
+    public WordThread(final String name, final String word, final int startLine, final int startPos, final int endLine) {
         super(name);
-        this.screen = screen;
         this.word = word;
-        this.x0 = x0;
-        this.y0 = y0;
+        this.startPos = startPos;
+        this.startLine = startLine;
+        this.endLine = endLine;
         this.millisecondsToWait = new Random().nextInt(500);
     }
 
     public void run() {
+        final Screen screen = Screen.getInstance();
+        screen.clear();
         int i;
-        for (i = 0; i < 10; i++) {
-            screen.writeStringAt(y0 + i, x0, Color.GREEN, this.word);
+        for (i = 0; i < this.endLine; i++) {
+            screen.writeStringAt(startLine + i, startPos, Color.GREEN, this.word);
             try {
                 Thread.sleep(this.millisecondsToWait);
             } catch (Exception ex) {
             }
-            screen.writeStringAt(y0 + i, x0, Color.BLACK, this.word);
+            screen.writeStringAt(startLine + i, startPos, Color.BLACK, this.word);
         }
-        screen.writeStringAt(y0 + i, x0, Color.GREEN, this.word);
+        screen.writeStringAt(startLine + i, startPos, Color.GREEN, this.word);
     }
 }

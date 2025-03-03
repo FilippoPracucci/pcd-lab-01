@@ -5,12 +5,10 @@ import static pcd.lab01.ex01.AuxLib.*;
 
 public class TestWordsFalling {
 
-    private static final int INITIAL_Y_VALUE = 0;
+    private static final int START_LINE = 0;
+    private static final int END_LINE = 10;
 
     public static void main(String[] args) {
-
-        final Screen screen = Screen.getInstance();
-        screen.clear();
 
         final String sentence = "This is a simple sentence with words ready to fall";
 
@@ -18,7 +16,7 @@ public class TestWordsFalling {
 
         for (WordPos wordPos: wordList) {
             final int x0 = wordPos.pos();
-            Thread wordThread = new WordThread(wordPos.word() + "-WordThread", screen, wordPos.word(), INITIAL_Y_VALUE, x0);
+            Thread wordThread = new WordThread(wordPos.word() + "-WordThread", wordPos.word(), START_LINE, x0, END_LINE);
             wordThread.start();
         }
     }
